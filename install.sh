@@ -22,10 +22,6 @@ sudo apt install -y apache2
 sudo systemctl enable apache2
 sudo systemctl start apache2
 
-# Get system IP address
-echo "Your system IP address is:"
-ip addr | grep inet
-
 # Install MariaDB
 echo "Installing MariaDB..."
 sudo apt install -y mariadb-server mariadb-client
@@ -33,7 +29,6 @@ sudo apt install -y mariadb-server mariadb-client
 # Enable and secure MariaDB
 sudo systemctl enable mariadb
 sudo systemctl start mariadb
-
 echo "Securing MariaDB..."
 sudo mariadb-secure-installation
 
@@ -81,6 +76,9 @@ sudo chmod -R 775 $TARGET_DIR
 
 # Prompt user for database credentials
 echo "Setting up MariaDB for WordPress..."
+default_db="waldjugend"
+read -p "Enter the WordPress database name [default: $default_db]: " DB_NAME
+DB_NAME=${DB_NAME:-waldjugend}
 default_user="admin"
 read -p "Enter the WordPress database user [default: $default_user]: " DB_USER
 DB_USER=${DB_USER:-$default_user}
@@ -100,15 +98,15 @@ sudo sed -i "s/database_name_here/${DB_NAME}/" $TARGET_DIR/wp-config.php
 sudo sed -i "s/username_here/${DB_USER}/" $TARGET_DIR/wp-config.php
 sudo sed -i "s/password_here/${DB_PASS}/" $TARGET_DIR/wp-config.php
 
-# Set up Apache virtual host
+# Set up Apache virtual host using variables
 echo "Setting up Apache virtual host..."
 VHOST_CONF="/etc/apache2/sites-available/waldjugend.conf"
 echo "<VirtualHost *:80>
- ServerName waldjugend
- ServerAdmin admin@localhost
- DocumentRoot $TARGET_DIR
- ErrorLog ${APACHE_LOG_DIR}/error.log
- CustomLog ${APACHE_LOG_DIR}/access.log combined
+    ServerName $DB_NAME
+    ServerAdmin $DB_USER@localhost
+    DocumentRoot $TARGET_DIR
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>" | sudo tee $VHOST_CONF
 
 sudo apachectl -t
