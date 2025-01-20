@@ -18,10 +18,9 @@ sudo apt update && sudo apt upgrade -y
 echo "Installing Apache2..."
 sudo apt install -y apache2
 
-# Enable Apache2 on startup and check status
+# Enable Apache2 on startup
 sudo systemctl enable apache2
 sudo systemctl start apache2
-sudo systemctl status apache2
 
 # Get system IP address
 echo "Your system IP address is:"
@@ -34,7 +33,6 @@ sudo apt install -y mariadb-server mariadb-client
 # Enable and secure MariaDB
 sudo systemctl enable mariadb
 sudo systemctl start mariadb
-sudo systemctl status mariadb
 
 echo "Securing MariaDB..."
 sudo mariadb-secure-installation
