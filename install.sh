@@ -81,8 +81,9 @@ sudo chmod -R 775 $TARGET_DIR
 
 # Prompt user for database credentials
 echo "Setting up MariaDB for WordPress..."
-read -p "Enter the WordPress database name: " DB_NAME
-read -p "Enter the WordPress database user: " DB_USER
+default_user="admin"
+read -p "Enter the WordPress database user [default: $default_user]: " DB_USER
+DB_USER=${DB_USER:-$default_user}
 read -sp "Enter the WordPress database password: " DB_PASS
 echo
 
@@ -115,6 +116,11 @@ sudo a2ensite waldjugend.conf
 sudo a2dissite 000-default.conf
 sudo systemctl reload apache2
 
+# Add ServerName to Apache configuration
+echo "Adding ServerName localhost to Apache configuration..."
+echo "ServerName localhost" | sudo tee -a /etc/apache2/apache2.conf
+sudo systemctl reload apache2
+
 # Adjust PHP configuration
 PHP_INI="/etc/php/$(php -r 'echo PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION;')/apache2/php.ini"
 echo "Updating PHP configuration in $PHP_INI..."
@@ -123,4 +129,4 @@ sudo sed -i "s/post_max_size = .*/post_max_size = 128M/" $PHP_INI
 sudo sed -i "s/max_execution_time = .*/max_execution_time = 300/" $PHP_INI
 sudo systemctl restart apache2
 
-echo "Installation complete! Open your browser and go to your system's IP address to complete the WordPress setup."
+echo "Installation complete! Open your browser and go to http://$(hostname -I | awk '{print $1}') to complete the WordPress setup."
