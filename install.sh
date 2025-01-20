@@ -129,4 +129,8 @@ sudo sed -i "s/post_max_size = .*/post_max_size = 128M/" $PHP_INI
 sudo sed -i "s/max_execution_time = .*/max_execution_time = 300/" $PHP_INI
 sudo systemctl restart apache2
 
-echo "Installation complete! Open your browser and go to http://$(hostname -I | awk '{print $1}') to complete the WordPress setup."
+# Finished Installation message
+clear
+cat ascii-text-art.txt
+printf "\nInstallation complete!\n"
+printf "Open your browser and go to http://$(hostname -I | cut -d' ' -f1) to complete the WordPress setup.\n"
