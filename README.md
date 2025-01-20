@@ -8,7 +8,41 @@ This guide will walk you through the installation of a WordPress website for you
 > The contents of this repository are tested for the installation of a WordPress website on [Ubuntu 24.10](https://ubuntu.com/download/server) with [MariaDB](https://mariadb.org/download) as a database, [php 8.3](https://www.php.net/downloads.php), [Apache2](https://httpd.apache.org/download.cgi) as an http(s) server and a [Raspberry Pi 5](https://www.raspberrypi.com/products/raspberry-pi-5/) as server on a local network. 
 > This repository contains an `install.sh` script that will guide you through the installation and may be simpler to use instead of following the guide below.
 
-## Setting up MariaDB and Apache2
+Table of Contents
+
+- [WordPress and MariaDB Installation Guide](#wordpress-and-mariadb-installation-guide)
+  - [Introduction](#introduction)
+  - [Using install script](#using-install-script)
+  - [Manual installation](#manual-installation)
+    - [Setting up MariaDB and Apache2](#setting-up-mariadb-and-apache2)
+    - [Installing WordPress](#installing-wordpress)
+    - [Setting up WordPress](#setting-up-wordpress)
+
+## Using install script
+
+Clone the repository to your local machine;
+```bash
+git clone "https://github.com/lwijshoff/waldjugend-installation.git"
+```
+
+Cd into the repository folder;
+```bash
+cd waldjugend-installation
+```
+
+Make the install script executable;
+```bash
+chmod +x install.sh
+```
+
+Run the install script;
+```bash
+sudo ./install.sh
+```
+
+## Manual installation
+
+### Setting up MariaDB and Apache2
 
 Some of the steps below are documented without the `sudo` command beforehand, it could be however that it still requires a `sudo`.
 
@@ -166,7 +200,7 @@ Allow http and https;
 sudo ufw allow 'Apache Full'
 ```
 
-## Installing WordPress
+### Installing WordPress
 
 Download WordPress
 ```bash
@@ -319,7 +353,7 @@ max_execution_time = 300
 
 Exit the text editor by pressing `CTRL + C` and typing `:wq`
 
-## Setting up WordPress
+### Setting up WordPress
 
 Open your browser enter the systems IP in your browser and follow the WordPress instructions in your browser;
 
