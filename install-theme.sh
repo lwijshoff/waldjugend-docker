@@ -26,5 +26,5 @@ sudo chown -R www-data:www-data $THEME_DIR
 sudo chmod -R 775 $THEME_DIR
 
 # Print a success message
-printf "Theme installation complete!"
+printf "Theme installation complete!\n"
 
