@@ -123,8 +123,10 @@ sudo systemctl restart apache2
 ```
 
 Create `info.php` file;
+
 > [!TIP]
 > You can use multiple text editors for this, such as `vim` or `nano`, I'll be using vim throughout the documentation.
+
 ```bash
 sudo apt-get install vim
 sudo vim /var/www/html/info.php
@@ -147,6 +149,7 @@ sudo apt install phpmyadmin
 
 When prompted; select Apache2 and select yes;
 Now generate a [strong password](https://edu.gcfglobal.org/en/internetsafety/creating-strong-passwords/1/) only the database manager knows, for phpmyadmin;
+
 > [!TIP]
 > You can later log into `systemipaddress/phpmyadmin` using the user: `phpmyadmin` and then your new securely generated password.
 
@@ -300,6 +303,7 @@ apachectl -t
 
 > [!NOTE]
 > If you get an error saying that Apache2 could not reliably determine the servers's fully qualified domain name, then do the following;
+
 ```bash
 sudo vim /etc/apache2/apache2.conf
 ```
