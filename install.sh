@@ -29,6 +29,7 @@ sudo apt install -y mariadb-server mariadb-client
 # Enable and secure MariaDB
 sudo systemctl enable mariadb
 sudo systemctl start mariadb
+clear
 echo "Securing MariaDB..."
 sudo mariadb-secure-installation
 
@@ -56,7 +57,8 @@ echo "Include /etc/phpmyadmin/apache.conf" | sudo tee -a /etc/apache2/apache2.co
 sudo systemctl reload apache2
 
 # Configure firewall
-echo "Configuring firewall..."
+clear
+printf "Configuring firewall...\nJust select 'y' to continue, usually this will work.\n"
 sudo ufw enable
 sudo ufw allow ssh
 sudo ufw allow 'Apache Full'
@@ -68,6 +70,7 @@ wget -c http://wordpress.org/latest.tar.gz
 echo "Extracting WordPress..."
 tar -xzvf latest.tar.gz
 
+clear
 TARGET_DIR="/var/www/html/waldjugend"
 echo "Setting up WordPress in $TARGET_DIR..."
 sudo mv wordpress $TARGET_DIR
@@ -76,13 +79,14 @@ sudo chmod -R 775 $TARGET_DIR
 
 # Prompt user for database credentials
 echo "Setting up MariaDB for WordPress..."
+printf "\nTo continue with default values (recommended) just press [ENTER]\n"
 default_db="waldjugend"
 read -p "Enter the WordPress database name [default: $default_db]: " DB_NAME
 DB_NAME=${DB_NAME:-waldjugend}
 default_user="admin"
-read -p "Enter the WordPress database user [default: $default_user]: " DB_USER
+read -p "Enter the WordPress admin user [default: $default_user]: " DB_USER
 DB_USER=${DB_USER:-$default_user}
-read -sp "Enter the WordPress database password: " DB_PASS
+read -sp "Enter the WordPress admin user password: " DB_PASS
 echo
 
 # Create WordPress database and user
