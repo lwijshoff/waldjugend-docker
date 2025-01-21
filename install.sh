@@ -129,6 +129,6 @@ sudo systemctl restart apache2
 
 # Finished Installation message
 clear
-cat /assets/ascii-waldjugend-art.txt
+cat ./assets/ascii-waldjugend-art.txt
 printf "\nInstallation complete!\n"
 printf "Open your browser and go to http://$(hostname -I | cut -d' ' -f1) to complete the WordPress setup.\n"
