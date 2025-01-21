@@ -10,6 +10,9 @@
 # Exit on errors
 set -e
 
+# Source the config file
+source "$(dirname "$0")/config.sh"  # Ensure it's sourced relative to the current script's location
+
 # Update and upgrade packages
 echo "Updating packages..."
 sudo apt update && sudo apt upgrade -y
@@ -71,7 +74,6 @@ echo "Extracting WordPress..."
 tar -xzvf latest.tar.gz
 
 clear
-TARGET_DIR="/var/www/html/waldjugend"
 echo "Setting up WordPress in $TARGET_DIR..."
 sudo mv wordpress $TARGET_DIR
 sudo chown -R www-data:www-data $TARGET_DIR
