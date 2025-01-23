@@ -16,9 +16,9 @@ source "$(dirname "$0")/config.sh"  # Ensure it's sourced relative to the curren
 # Derive theme folder name from the repo URL and build the path
 THEME_DIR="$TARGET_DIR/wp-content/themes/$(basename $THEME_REPO .git)"
 
-# Clone the theme repository into the themes directory
-echo "Cloning theme into $THEME_DIR..."
-sudo git clone $THEME_REPO $THEME_DIR
+# Clone the "dev" branch of the theme repository into the themes directory
+echo "Cloning the 'dev' branch into $THEME_DIR..."
+sudo git clone --branch dev --single-branch $THEME_REPO $THEME_DIR
 
 # Set the proper ownership and permissions
 echo "Setting ownership and permissions for the theme..."
@@ -27,4 +27,3 @@ sudo chmod -R 775 $THEME_DIR
 
 # Print a success message
 printf "Theme installation complete!\n"
-
