@@ -81,7 +81,7 @@ sudo chmod -R 775 $TARGET_DIR
 
 # Prompt user for database credentials
 echo "Setting up MariaDB for WordPress..."
-printf "\nTo continue with default values (recommended) just press [ENTER]\n"
+printf "\nTo continue with default values (not recommended) just press [ENTER]\n"
 default_db="waldjugend"
 read -p "Enter the WordPress database name [default: $default_db]: " DB_NAME
 DB_NAME=${DB_NAME:-waldjugend}
