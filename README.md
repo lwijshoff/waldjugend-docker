@@ -385,6 +385,8 @@ sudo ./install-theme.sh
 > [!NOTE]
 > This will copy the theme files to the correct location, however you will still need to manually activate the theme in your WordPress dashboard. Also don't forget to install the ``nirvana-settings.txt`` as explained in the [design configuration](https://waldjugend-kleve.de/design-konfiguration//#schritt-3).
 
+You can now continue with the [design configuration](https://waldjugend-kleve.de/design-konfiguration/).
+
 ## Updating the waldjugend-theme
 
 To update the waldjugend theme, you need to run the following commands while making sure you are in this repositories directory;
