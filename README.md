@@ -4,6 +4,8 @@
 
 This guide will walk you through the installation of a WordPress website for your own Waldjugend Horst, Landesverband or other purposes.
 
+If you are just looking to install the theme, you can do so by checking out [Installing the waldjugend-theme](#installing-the-waldjugend-theme) and [Updating the waldjugend-theme](#updating-the-waldjugend-theme).
+
 > [!IMPORTANT]
 > The contents of this repository are tested for the installation of a WordPress website on [Ubuntu 24.10](https://ubuntu.com/download/server) with [MariaDB](https://mariadb.org/download) as a database, [php 8.3](https://www.php.net/downloads.php), [Apache2](https://httpd.apache.org/download.cgi) as an http(s) server and a [Raspberry Pi 5](https://www.raspberrypi.com/products/raspberry-pi-5/) as server on a local network. 
 > This repository contains an `install.sh` script that will guide you through the installation and may be simpler to use instead of following the guide below.
@@ -17,6 +19,8 @@ Table of Contents
     - [Setting up MariaDB and Apache2](#setting-up-mariadb-and-apache2)
     - [Installing WordPress](#installing-wordpress)
     - [Setting up WordPress](#setting-up-wordpress)
+  - [Installing the waldjugend-theme](#installing-the-waldjugend-theme)
+  - [Updating the waldjugend-theme](#updating-the-waldjugend-theme)
 
 ## Using install script
 
@@ -366,3 +370,33 @@ Open your browser enter the systems IP in your browser and follow the WordPress 
 > You can confirm this error by running the `apachectl configtest` command in your [CLI](https://www.google.com/search?q=CLI&client=firefox-b-d&sca_esv=741dc4f98c90c9c4&ei=jDqOZ5elHJGpxc8P9q6SkAE&ved=0ahUKEwiXm4fnn4SLAxWRVPEDHXaXBBIQ4dUDCBA&uact=5&oq=CLI&gs_lp=Egxnd3Mtd2l6LXNlcnAiA0NMSTIKEAAYgAQYQxiKBTIKEAAYgAQYQxiKBTILEC4YgAQYsQMYgwEyBRAuGIAEMhAQABiABBixAxhDGIMBGIoFMgsQABiABBixAxiDATILEC4YgAQY0QMYxwEyCBAAGIAEGLEDMgoQABiABBhDGIoFMgsQLhiABBjHARivAUifCVDKA1jDBnABeAGQAQCYAWKgAY8CqgEBM7gBA8gBAPgBAZgCBKACqgLCAgoQABiwAxjWBBhHwgINEAAYgAQYsAMYQxiKBcICDhAAGLADGOQCGNYE2AEBwgIZEC4YgAQYsAMY0QMYQxjHARjIAxiKBdgBAcICExAuGIAEGLADGEMYyAMYigXYAQHCAhEQLhiABBixAxjRAxiDARjHAcICDhAAGIAEGLEDGIMBGIoFwgIREC4YgAQYsQMYgwEYxwEYrwHCAggQLhiABBixA5gDAIgGAZAGEboGBggBEAEYCZIHAzIuMqAHjCs&sclient=gws-wiz-serp).
 
 If you did everything correctly, you can now continue with the [design configuration](https://waldjugend-kleve.de/design-konfiguration/).
+
+## Installing the waldjugend-theme
+
+To install the waldjugend theme, you need to run the following commands while making sure you are in this repositories directory;
+
+```bash
+git clone "https://github.com/lwijshoff/waldjugend-installation.git"
+cd waldjugend-installation
+chmod +x install-theme.sh
+sudo ./install-theme.sh
+```
+
+> [!NOTE]
+> This will copy the theme files to the correct location, however you will still need to manually activate the theme in your WordPress dashboard. Also don't forget to install the ``nirvana-settings.txt`` as explained in the [design configuration](https://waldjugend-kleve.de/design-konfiguration//#schritt-3).
+
+You can now continue with the [design configuration](https://waldjugend-kleve.de/design-konfiguration/).
+
+## Updating the waldjugend-theme
+
+To update the waldjugend theme, you need to run the following commands while making sure you are in this repositories directory;
+
+```bash
+git clone "https://github.com/lwijshoff/waldjugend-installation.git"
+cd waldjugend-installation
+chmod +x update-theme.sh
+sudo ./update-theme.sh
+```
+
+> [!TIP]
+> This method of updating should save you the trouble of having to manually reconfigure the ``config.php`` over and over again, as this file will be ignored automatically by the update script.

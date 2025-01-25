@@ -10,6 +10,9 @@
 # Exit on errors
 set -e
 
+# Source the config file
+source "$(dirname "$0")/config.sh"  # Ensure it's sourced relative to the current script's location
+
 # Update and upgrade packages
 echo "Updating packages..."
 sudo apt update && sudo apt upgrade -y
@@ -71,7 +74,6 @@ echo "Extracting WordPress..."
 tar -xzvf latest.tar.gz
 
 clear
-TARGET_DIR="/var/www/html/waldjugend"
 echo "Setting up WordPress in $TARGET_DIR..."
 sudo mv wordpress $TARGET_DIR
 sudo chown -R www-data:www-data $TARGET_DIR
@@ -79,7 +81,7 @@ sudo chmod -R 775 $TARGET_DIR
 
 # Prompt user for database credentials
 echo "Setting up MariaDB for WordPress..."
-printf "\nTo continue with default values (recommended) just press [ENTER]\n"
+printf "\nTo continue with default values (not recommended!) just press [ENTER]\n"
 default_db="waldjugend"
 read -p "Enter the WordPress database name [default: $default_db]: " DB_NAME
 DB_NAME=${DB_NAME:-waldjugend}
