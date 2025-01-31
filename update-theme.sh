@@ -16,11 +16,22 @@ source "$(dirname "$0")/config.sh"  # Ensure it's sourced relative to the curren
 # Derive theme folder name from the repo URL and build the path
 THEME_DIR="$TARGET_DIR/wp-content/themes/$(basename $THEME_REPO .git)"
 
-# Mark the directory as a safe Git directory to prevent "dubious ownership" errors
-git config --global --add safe.directory "$THEME_DIR"
+# Ensure the theme directory exists before proceeding
+if [ ! -d "$THEME_DIR" ]; then
+    echo "Error: Theme directory '$THEME_DIR' does not exist!"
+    exit 1
+fi
 
 # Go to the theme directory
 cd "$THEME_DIR"
+
+# Mark the directory as a safe Git directory locally to prevent "dubious ownership" errors
+if [ -d .git ]; then
+    git config --local safe.directory "$THEME_DIR"
+else
+    echo "Error: '$THEME_DIR' is not a Git repository!"
+    exit 1
+fi
 
 # Fetch the latest tags and releases from GitHub
 echo "Fetching tags from the remote repository..."
@@ -30,7 +41,7 @@ git fetch --tags
 LATEST_RELEASE=$(git tag -l | sort -V | tail -n 1)
 
 # Get the current installed version (local tag)
-CURRENT_VERSION=$(git describe --tags --abbrev=0 || echo "none")
+CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
 
 echo "Current version: $CURRENT_VERSION"
 echo "Latest release: $LATEST_RELEASE"
