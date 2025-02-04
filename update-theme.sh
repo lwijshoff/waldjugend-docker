@@ -27,7 +27,7 @@ cd "$THEME_DIR"
 
 # Mark the directory as a safe Git directory locally to prevent "dubious ownership" errors
 if [ -d .git ]; then
-    git config --local safe.directory "$THEME_DIR"
+    git config --global --add safe.directory "$THEME_DIR"
 else
     echo "Error: '$THEME_DIR' is not a Git repository!"
     exit 1
