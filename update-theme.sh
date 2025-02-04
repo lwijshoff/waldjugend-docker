@@ -60,7 +60,7 @@ if [ "$CURRENT_VERSION" != "$LATEST_RELEASE" ]; then
 
     # Print success message
     clear
-    cat ./assets/ascii-waldjugend-art.txt
+    cat "$(dirname "$0")/assets/ascii-waldjugend-art.txt"
     NEW_VERSION=$(git describe --tags --abbrev=0)
     printf "\nUpdated to version: %s\n" "$NEW_VERSION"
     printf "\nTheme update complete!\n"
