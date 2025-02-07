@@ -375,9 +375,15 @@ If you did everything correctly, you can now continue with the [design configura
 
 To install the waldjugend theme, you need to run the following commands while making sure you are in this repositories directory;
 
+Git clone the repository if you haven't already and cd into it;
+
 ```bash
 git clone "https://github.com/lwijshoff/waldjugend-installation.git"
 cd waldjugend-installation
+```
+
+If you already cloned the repository, you can continue by running the following commands;
+```bash
 chmod +x install-theme.sh
 sudo ./install-theme.sh
 ```
@@ -391,9 +397,15 @@ You can now continue with the [design configuration](https://waldjugend-kleve.de
 
 To update the waldjugend theme, you need to run the following commands while making sure you are in this repositories directory;
 
+Git clone the repository if you haven't already and cd into it;
+
 ```bash
 git clone "https://github.com/lwijshoff/waldjugend-installation.git"
 cd waldjugend-installation
+```
+
+If you already cloned the repository, you can continue by running the following commands;
+```bash
 chmod +x update-theme.sh
 sudo ./update-theme.sh
 ```
