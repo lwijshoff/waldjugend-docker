@@ -54,6 +54,8 @@ if [ "$DEBUG" = true ]; then
     echo "Commit: $LAST_COMMIT_HASH"
     echo "Message: $LAST_COMMIT_MESSAGE"
 
+    VERSION="dev #$LAST_COMMIT_HASH"
+
 else # Else is equal to debug=false
     # Fetch the latest tags and releases from GitHub
     echo "Fetching tags from the remote repository..."
@@ -74,6 +76,8 @@ else # Else is equal to debug=false
         
         git checkout "$LATEST_RELEASE"
         git pull origin "$LATEST_RELEASE"
+
+        VERSION="$(git describe --tags --abbrev=0 2>/dev/null || git rev-parse --abbrev-ref HEAD)"
     else
         echo "You are already on the latest release ($LATEST_RELEASE). No update needed."
         exit 0
@@ -88,5 +92,5 @@ sudo chmod -R 775 "$THEME_DIR"
 # Print success message
 clear
 cat "$SCRIPT_DIR/assets/ascii-waldjugend-art.txt"
-printf "\nUpdated to version: %s\n" "$(git describe --tags --abbrev=0 2>/dev/null || git rev-parse --abbrev-ref HEAD)"
-printf "\nTheme update complete!\n"
+printf "\nUpdated to version: %s\n" "$VERSION"
+printf "Theme update complete!\n"
