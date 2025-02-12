@@ -65,13 +65,17 @@ else # Else is equal to debug=false
     LATEST_RELEASE=$(git tag -l | sort -V | tail -n 1)
 
     # Get the current installed version (local tag)
-    CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || git rev-parse --abbrev-ref HEAD) # echo "none") # if it works incorreclty
+    CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
+
+    # Get the current branch name
+    CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
     echo "Current version: $CURRENT_VERSION"
     echo "Latest release: $LATEST_RELEASE"
+    echo "Current branch: $CURRENT_BRANCH"
 
     # Check if the local version is the same as the latest release
-    if [ "$CURRENT_VERSION" != "$LATEST_RELEASE" ]; then
+    if [ "$CURRENT_VERSION" != "$LATEST_RELEASE" ] || [ "$CURRENT_BRANCH" = "dev" ]; then
         echo "A new release is available. Updating to version $LATEST_RELEASE..."
         
         git checkout "$LATEST_RELEASE"
