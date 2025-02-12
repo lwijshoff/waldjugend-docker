@@ -82,7 +82,7 @@ else # Else is equal to debug=false
         git pull origin "$LATEST_RELEASE"
 
         VERSION="$(git describe --tags --abbrev=0 2>/dev/null || git rev-parse --abbrev-ref HEAD)"
-    else if [ "$CURRENT_BRANCH" = "dev" ]; then
+    elif [ "$CURRENT_BRANCH" = "dev" ]; then
         echo "You are still on 'dev'. Degrading to the latest release ($LATEST_RELEASE)"
 
         git stash
