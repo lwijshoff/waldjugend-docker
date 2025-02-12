@@ -43,9 +43,8 @@ fi
 if [ "$DEBUG" = true ]; then
     echo "Debug mode enabled: Pulling latest changes from 'dev' branch..."
 
-    git stash
-    git pull origin dev
     git checkout dev
+    git pull origin dev
 
     # Get latest commit hash and message
     LAST_COMMIT_HASH=$(git rev-parse --short HEAD)
@@ -68,25 +67,13 @@ else # Else is equal to debug=false
     # Get the current installed version (local tag)
     CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
 
-    # Get the current branch name
-    CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-
     echo "Current version: $CURRENT_VERSION"
     echo "Latest release: $LATEST_RELEASE"
-    # echo "Current branch: $CURRENT_BRANCH"
 
     # Check if the local version is the same as the latest release
     if [ "$CURRENT_VERSION" != "$LATEST_RELEASE" ]; then
         echo "A new release is available. Updating to version $LATEST_RELEASE..."
         
-        git checkout "$LATEST_RELEASE"
-        git pull origin "$LATEST_RELEASE"
-
-        VERSION="$(git describe --tags --abbrev=0 2>/dev/null || git rev-parse --abbrev-ref HEAD)"
-    elif [ "$CURRENT_BRANCH" = "dev" ]; then
-        echo "You are still on 'dev'. Degrading to the latest release ($LATEST_RELEASE)"
-
-        git stash
         git checkout "$LATEST_RELEASE"
         git pull origin "$LATEST_RELEASE"
 
