@@ -72,12 +72,20 @@ else # Else is equal to debug=false
 
     echo "Current version: $CURRENT_VERSION"
     echo "Latest release: $LATEST_RELEASE"
-    echo "Current branch: $CURRENT_BRANCH"
+    # echo "Current branch: $CURRENT_BRANCH"
 
     # Check if the local version is the same as the latest release
-    if [ "$CURRENT_VERSION" != "$LATEST_RELEASE" ] || [ "$CURRENT_BRANCH" = "dev" ]; then
+    if [ "$CURRENT_VERSION" != "$LATEST_RELEASE" ]; then
         echo "A new release is available. Updating to version $LATEST_RELEASE..."
         
+        git checkout "$LATEST_RELEASE"
+        git pull origin "$LATEST_RELEASE"
+
+        VERSION="$(git describe --tags --abbrev=0 2>/dev/null || git rev-parse --abbrev-ref HEAD)"
+    else if [ "$CURRENT_BRANCH" = "dev" ]; then
+        echo "You are still on 'dev'. Degrading to the latest release ($LATEST_RELEASE)"
+
+        git stash
         git checkout "$LATEST_RELEASE"
         git pull origin "$LATEST_RELEASE"
 
