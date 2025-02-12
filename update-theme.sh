@@ -84,6 +84,6 @@ sudo chmod -R 775 "$THEME_DIR"
 
 # Print success message
 clear
-cat "$(dirname "$0")/assets/ascii-waldjugend-art.txt"
+cat "$(cd "$(dirname "$0")" && pwd)/assets/ascii-waldjugend-art.txt"
 printf "\nUpdated to version: %s\n" "$(git describe --tags --abbrev=0 2>/dev/null || git rev-parse --abbrev-ref HEAD)"
 printf "\nTheme update complete!\n"
