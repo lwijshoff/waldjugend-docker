@@ -10,9 +10,6 @@
 # Exit on errors
 set -e
 
-# Enable debug mode if you wish to pull changes from dev instead 
-DEBUG=false
-
 # Save the directory where the script was executed from
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
@@ -39,49 +36,37 @@ else
     exit 1
 fi
 
-# If debug mode is enabled, switch to dev branch instead of checking tags
-if [ "$DEBUG" = true ]; then
-    echo "Debug mode enabled: Pulling latest changes from 'dev' branch..."
+# Get latest commit hash and message
+LAST_COMMIT_HASH=$(git rev-parse --short HEAD)
+LAST_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
 
-    git checkout dev
-    git pull origin dev
+# echo "Commit: $LAST_COMMIT_HASH"
+# echo "Message: $LAST_COMMIT_MESSAGE"
 
-    # Get latest commit hash and message
-    LAST_COMMIT_HASH=$(git rev-parse --short HEAD)
-    LAST_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+# Fetch the latest tags and releases from GitHub
+echo "Fetching tags from the remote repository..."
+git fetch --tags
 
-    echo "Latest commit pulled:"
-    echo "Commit: $LAST_COMMIT_HASH"
-    echo "Message: $LAST_COMMIT_MESSAGE"
+# Get the latest tag (release) from GitHub
+LATEST_RELEASE=$(git tag -l | sort -V | tail -n 1)
 
-    VERSION="dev #$LAST_COMMIT_HASH"
+# Get the current installed version (local tag)
+CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
 
-else # Else is equal to debug=false
-    # Fetch the latest tags and releases from GitHub
-    echo "Fetching tags from the remote repository..."
-    git fetch --tags
+echo "Current version: $CURRENT_VERSION"
+echo "Latest release: $LATEST_RELEASE"
 
-    # Get the latest tag (release) from GitHub
-    LATEST_RELEASE=$(git tag -l | sort -V | tail -n 1)
+# Check if the local version is the same as the latest release
+if [ "$CURRENT_VERSION" != "$LATEST_RELEASE" ]; then
+    echo "A new release is available. Updating to version $LATEST_RELEASE..."
+    
+    git checkout "$LATEST_RELEASE"
+    git pull origin "$LATEST_RELEASE"
 
-    # Get the current installed version (local tag)
-    CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
-
-    echo "Current version: $CURRENT_VERSION"
-    echo "Latest release: $LATEST_RELEASE"
-
-    # Check if the local version is the same as the latest release
-    if [ "$CURRENT_VERSION" != "$LATEST_RELEASE" ]; then
-        echo "A new release is available. Updating to version $LATEST_RELEASE..."
-        
-        git checkout "$LATEST_RELEASE"
-        git pull origin "$LATEST_RELEASE"
-
-        VERSION="$(git describe --tags --abbrev=0 2>/dev/null || git rev-parse --abbrev-ref HEAD)"
-    else
-        echo "You are already on the latest release ($LATEST_RELEASE). No update needed."
-        exit 0
-    fi
+    VERSION="$(git describe --tags --abbrev=0 2>/dev/null || git rev-parse --abbrev-ref HEAD)"
+else
+    echo "You are already on the latest release ($LATEST_RELEASE). No update needed."
+    exit 0
 fi
 
 # Set the proper ownership and permissions
