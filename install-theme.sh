@@ -31,4 +31,4 @@ sudo chmod -R 775 $THEME_DIR
 # Print success message
 clear
 cat "$SCRIPT_DIR/assets/ascii-waldjugend-art.txt"
-printf "Theme installation complete!\n"
+printf "\nTheme installation complete!\n"
