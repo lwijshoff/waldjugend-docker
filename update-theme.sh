@@ -43,8 +43,9 @@ fi
 if [ "$DEBUG" = true ]; then
     echo "Debug mode enabled: Pulling latest changes from 'dev' branch..."
 
-    git checkout dev
+    git stash
     git pull origin dev
+    git checkout dev
 
     # Get latest commit hash and message
     LAST_COMMIT_HASH=$(git rev-parse --short HEAD)
