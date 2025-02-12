@@ -65,7 +65,7 @@ else # Else is equal to debug=false
     LATEST_RELEASE=$(git tag -l | sort -V | tail -n 1)
 
     # Get the current installed version (local tag)
-    CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
+    CURRENT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || git rev-parse --abbrev-ref HEAD) # echo "none") # if it works incorreclty
 
     echo "Current version: $CURRENT_VERSION"
     echo "Latest release: $LATEST_RELEASE"
