@@ -85,8 +85,6 @@ echo "Setting ownership and permissions for the theme..."
 sudo chown -R www-data:www-data "$THEME_DIR"
 sudo chmod -R 775 "$THEME_DIR"
 
-cd "$SCRIPT_DIR"
-
 # Print success message
 clear
 cat "$SCRIPT_DIR/assets/ascii-waldjugend-art.txt"
