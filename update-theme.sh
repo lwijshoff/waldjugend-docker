@@ -13,8 +13,11 @@ set -e
 # Enable debug mode if you wish to pull changes from dev instead 
 DEBUG=false
 
+# Save the directory where the script was executed from
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
 # Source the config file
-source "$(dirname "$0")/config.sh"  # Ensure it's sourced relative to the current script's location
+source "$SCRIPT_DIR/config.sh"  # Ensure it's sourced relative to the current script's location
 
 # Derive theme folder name from the repo URL and build the path
 THEME_DIR="$TARGET_DIR/wp-content/themes/$(basename $THEME_REPO .git)"
@@ -82,8 +85,10 @@ echo "Setting ownership and permissions for the theme..."
 sudo chown -R www-data:www-data "$THEME_DIR"
 sudo chmod -R 775 "$THEME_DIR"
 
+cd "$SCRIPT_DIR"
+
 # Print success message
 clear
-cat "$(cd "$(dirname "$0")" && pwd)/assets/ascii-waldjugend-art.txt"
+cat "$SCRIPT_DIR/assets/ascii-waldjugend-art.txt"
 printf "\nUpdated to version: %s\n" "$(git describe --tags --abbrev=0 2>/dev/null || git rev-parse --abbrev-ref HEAD)"
 printf "\nTheme update complete!\n"
