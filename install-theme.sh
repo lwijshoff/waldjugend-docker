@@ -16,16 +16,9 @@ source "$(dirname "$0")/config.sh"  # Ensure it's sourced relative to the curren
 # Derive theme folder name from the repo URL and build the path
 THEME_DIR="$TARGET_DIR/wp-content/themes/$(basename $THEME_REPO .git)"
 
-# Extract the owner and repo name from the GitHub URL
-REPO_OWNER=$(echo $THEME_REPO | sed -E 's/https:\/\/github.com\/([^\/]+)\/([^\/]+)\.git/\1/')
-REPO_NAME=$(echo $THEME_REPO | sed -E 's/https:\/\/github.com\/([^\/]+)\/([^\/]+)\.git/\2/')
-
-# Get the latest release tag using GitHub API
-LATEST_RELEASE=$(curl --silent "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest" | jq -r .tag_name)
-
-# Clone the latest release into the theme directory
-echo "Cloning the latest release ($LATEST_RELEASE) into $THEME_DIR..."
-sudo git clone --branch "$LATEST_RELEASE" --single-branch $THEME_REPO $THEME_DIR
+# Clone the "master" branch of the theme repository into the themes directory
+echo "Cloning the 'master' branch into $THEME_DIR..."
+sudo git clone --branch master --single-branch $THEME_REPO $THEME_DIR
 
 # Set the proper ownership and permissions
 echo "Setting ownership and permissions for the theme..."
