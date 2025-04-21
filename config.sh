@@ -8,4 +8,3 @@
 
 # config.sh
 TARGET_DIR="/var/www/html/waldjugend"
-THEME_REPO="https://github.com/lwijshoff/waldjugend-theme.git"
