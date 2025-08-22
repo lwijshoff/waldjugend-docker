@@ -57,6 +57,7 @@ volumes:
   wp_data:
   db_data:
   secret_data:
+    external: true
 
 networks:
   backend:
