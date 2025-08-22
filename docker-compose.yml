@@ -1,5 +1,5 @@
 services:
-  wordpress:
+  wp:
     container_name: wordpress
     image: wordpress:php8.3-apache
     platform: linux/arm64
@@ -13,7 +13,7 @@ services:
       WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
-      - wordpress_data:/var/www/html
+      - wp_data:/var/www/html
       - ./config.ini:/usr/local/etc/php/conf.d/config.ini
     depends_on:
       - db
@@ -27,7 +27,7 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: wp_db
-      MYSQL_ROOT_HOST: 'db' # Limit MySQL root access to containers on the 'backend' network, set to '%' for all hosts
+      MYSQL_ROOT_HOST: 'waldjugend_backend' # Limit MySQL root access to containers on the 'backend' network, set to '%' for all hosts
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -55,8 +55,8 @@ services:
       - backend
 
 volumes:
-  wordpress_data:
-    name: wordpress_data
+  wp_data:
+    name: wp_data
   db_data:
     name: db_data
 
