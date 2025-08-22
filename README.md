@@ -68,6 +68,9 @@ Before you begin, make sure you have installed:
   ```
   (or replace `localhost` with your server’s IP/hostname).
 
+  > [!TIP]  
+  > It might take some time for the database to get up and running. 
+
 - **Stop containers**:  
   ```bash
   docker compose down
