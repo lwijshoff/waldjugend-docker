@@ -45,8 +45,8 @@ Before you begin, make sure you have installed:
   ```
   Edit `.env` with your preferred editor (database name, user, password, ports, etc.).
 
-  > [!CAUTION]  
-  > Pick strong, long and random passwords, as they may otherwise grant unauthorized people access to your database. 
+> [!CAUTION]  
+> Pick strong, long and random passwords, as they may otherwise grant unauthorized people access to your database. 
 
 3. **Configure WordPress settings**  
   There is a `config.ini` file in the `/rsc` directory. Adjust it as needed for your environment.
