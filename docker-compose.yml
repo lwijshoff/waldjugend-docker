@@ -11,10 +11,12 @@ services:
       WORDPRESS_DB_NAME: wp_db
       WORDPRESS_DB_PREFIX: wp_
       WORDPRESS_DB_USER: root
-      WORDPRESS_DB_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/mysql_root_password
     volumes:
       - wp_data:/var/www/html
       - ./config.ini:/usr/local/etc/php/conf.d/config.ini
+    secrets:
+      - mysql_root_password
     depends_on:
       - db
     networks:
@@ -28,11 +30,13 @@ services:
     environment:
       MYSQL_DATABASE: wp_db
       MYSQL_ROOT_HOST: '%' # Allow root access within the Docker network (safe if DB port isn't exposed)
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
+    secrets:
+      - mysql_root_password
     networks:
       - backend
 
@@ -59,6 +63,10 @@ volumes:
     name: wp_data
   db_data:
     name: db_data
+
+secrets:
+  mysql_root_password:
+    file: ./secrets/mysql_root_password
 
 networks:
   backend:
