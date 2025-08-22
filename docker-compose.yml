@@ -55,11 +55,8 @@ services:
 
 volumes:
   wp_data:
-    name: wp_data
   db_data:
-    name: db_data
   secret_data:
-    name: secret_data
 
 networks:
   backend:
