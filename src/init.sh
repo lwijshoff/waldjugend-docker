@@ -59,7 +59,7 @@ mkdir -p "$SECRETS_DIR"
 if [ ! -f "$ROOT_SECRET_FILE" ]; then
   echo "[+] Generating secure MySQL root password..."
   openssl rand -base64 32 > "$ROOT_SECRET_FILE"
-  chmod 600 "$ROOT_SECRET_FILE"
+  chmod 644 "$ROOT_SECRET_FILE"
 else
   echo "[*] Root password secret already exists at $ROOT_SECRET_FILE"
 fi
