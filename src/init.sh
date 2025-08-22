@@ -64,15 +64,6 @@ else
   echo "[*] Root password secret already exists at $ROOT_SECRET_FILE"
 fi
 
-# Show ASCII art
-echo
-if [ -f "$ASCII_ART_FILE" ]; then
-  cat "$ASCII_ART_FILE"
-else
-  echo "ASCII art file not found: $ASCII_ART_FILE"
-fi
-echo
-
 # Launch docker-compose (v2 or v1)
 echo "[*] Starting Docker containers..."
 
@@ -86,3 +77,12 @@ else
   echo "https://docs.docker.com/compose/install/"
   exit 1
 fi
+
+# Show ASCII art
+echo
+if [ -f "$ASCII_ART_FILE" ]; then
+  cat "$ASCII_ART_FILE"
+else
+  echo "ASCII art file not found: $ASCII_ART_FILE"
+fi
+echo
