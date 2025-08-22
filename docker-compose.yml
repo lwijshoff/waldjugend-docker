@@ -13,8 +13,8 @@ services:
       WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD_FILE: /run/secrets/mysql_root_password
     volumes:
-      - wp_data:/var/www/html
-      - secret_data:/run/secrets:ro
+      - wj_wp_data:/var/www/html
+      - wj_secret_data:/run/secrets:ro
       - ./config.ini:/usr/local/etc/php/conf.d/config.ini
     depends_on:
       - db
@@ -33,8 +33,8 @@ services:
       MYSQL_USER_FILE: /run/secrets/mysql_user
       MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
     volumes:
-      - db_data:/var/lib/mysql
-      - secret_data:/run/secrets:ro
+      - wj_db_data:/var/lib/mysql
+      - wj_secret_data:/run/secrets:ro
     networks:
       - backend
 
@@ -47,7 +47,7 @@ services:
       - 8080:80
     environment:
       PMA_HOST: db
-      PMA_PMADB: pma_db
+      PMA_PMADB: wj_pma_db
     depends_on:
       - db
     networks:
@@ -55,11 +55,14 @@ services:
 
 volumes:
   wp_data:
+    name: wj_wp_data
   db_data:
+    name: wj_db_data
   secret_data:
+    name: wj_secret_data
     external: true
 
 networks:
   backend:
-    name: waldjugend_backend
+    name: wj_backend
     driver: bridge

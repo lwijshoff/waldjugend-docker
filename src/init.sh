@@ -41,13 +41,13 @@ echo "$MYSQL_USER" > "$TMP_SECRET_DIR/mysql_user"
 echo "$MYSQL_PASSWORD" >> "$TMP_SECRET_DIR/mysql_password"
 
 # Create Docker volume if needed
-echo "[+] Creating Docker volume 'secret_data'..."
-docker volume create secret_data > /dev/null
+echo "[+] Creating Docker volume 'wj_secret_data'..."
+docker volume create wj_secret_data > /dev/null
 
 # Copy secrets into volume
 echo "[+] Copying secrets into Docker-managed volume..."
 docker run --rm \
-  -v secret_data:/run/secrets \
+  -v wj_secret_data:/run/secrets \
   -v "$TMP_SECRET_DIR":/tmp_secrets:ro \
   alpine \
   sh -c "cp /tmp_secrets/* /run/secrets/ && chmod 0444 /run/secrets/*"
