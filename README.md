@@ -1,4 +1,4 @@
-# WordPress Waldjugend Docker Installation
+# WordPress Waldjugend Docker Setup
 
 ## Introduction
 
@@ -30,7 +30,7 @@ Before you begin, make sure you have installed:
 
 ---
 
-## Installation
+## Setup
 
 1. **Clone this repository**
   ```bash
