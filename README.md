@@ -53,7 +53,7 @@ Before you begin, make sure you have installed:
 
 4. **Start the containers**  
   ```bash
-  docker-compose up -d
+  docker compose up -d
   ```
   This will start WordPress, the database, and other required services in the background.
 
@@ -64,26 +64,27 @@ Before you begin, make sure you have installed:
 - **Access WordPress**:  
   Once everything is running, open your browser and go to:  
   ```
-  http://localhost:8080
+  http://localhost
   ```
-  (or replace `localhost` with your server’s IP/hostname, depending on your `.env` configuration).
+  (or replace `localhost` with your server’s IP/hostname).
 
 - **Stop containers**:  
   ```bash
-  docker-compose down
+  docker compose down
   ```
+  These volumes are persistent, so your data is retained. Unless you delete the `wordpress_data` and `db_data` volumes.
 
 - **View logs**:  
   ```bash
-  docker-compose logs -f
+  docker compose logs -f
   ```
 
 ---
 
 ## Notes
 
-- Use `.env` to customize **database credentials**, **ports**, and **volume paths**.  
-- `config.ini` in `/rsc` contains project-specific configurations.  
+- Use `.env` to customize **database credentials**.  
+- `config.ini` in `/rsc` [contains php.ini directives](https://www.php.net/manual/en/ini.list.php).  
 - This setup is mainly intended for **local development** and **testing**.  
   For production use, consider adding HTTPS, backups, and security hardening.
 
