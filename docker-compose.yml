@@ -27,7 +27,7 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: wp_db
-      MYSQL_ROOT_HOST: 'waldjugend_backend' # Limit MySQL root access to containers on the 'backend' network, set to '%' for all hosts
+      MYSQL_ROOT_HOST: '%' # Allow root access within the Docker network (safe if DB port isn't exposed)
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
