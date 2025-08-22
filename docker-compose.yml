@@ -1,0 +1,64 @@
+services:
+  wordpress:
+    container_name: wordpress
+    image: wordpress:php8.3-apache
+    platform: linux/arm64
+    restart: unless-stopped
+    ports:
+      - 80:80 # Change to 443 if you wish to run over https with an SSL certificate
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: wp_db
+      WORDPRESS_DB_PREFIX: wp_
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./config.ini:/usr/local/etc/php/conf.d/config.ini
+    depends_on:
+      - db
+    networks:
+      - backend
+
+  db:
+    container_name: mariadb
+    image: mariadb
+    platform: linux/arm64
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: wp_db
+      MYSQL_ROOT_HOST: 'db' # Limit MySQL root access to containers on the 'backend' network, set to '%' for all hosts
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - backend
+
+  pma:
+    container_name: phpmyadmin
+    image: arm64v8/phpmyadmin
+    platform: linux/arm64
+    restart: unless-stopped
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOST: db
+      PMA_PMADB: pma_db
+      # Unset below if you want Config authentication mode instead of cookie authentication
+      # PMA_USER: ${MYSQL_USER}
+      # PMA_PASSWORD: ${MYSQL_PASSWORD}
+    depends_on:
+      - db
+    networks:
+      - backend
+
+volumes:
+  wordpress_data:
+  db_data:
+
+networks:
+  backend:
+    name: waldjugend_backend
+    driver: bridge
