@@ -8,6 +8,7 @@ ROOT_SECRET_FILE="$SECRETS_DIR/mysql_root_password"
 ASCII_ART_FILE="../res/ascii-waldjugend-art.txt"
 COMPOSE_FILE="../docker-compose.yml"
 
+clear
 echo "Welcome to the Waldjugend Docker Setup"
 echo
 
