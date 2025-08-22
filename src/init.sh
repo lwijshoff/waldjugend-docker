@@ -2,11 +2,15 @@
 
 set -e
 
-ENV_FILE="/.env"
-SECRETS_DIR="/secrets"
+# Get the absolute path of the directory where the script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+
+ENV_FILE="$ROOT_DIR/.env"
+SECRETS_DIR="$ROOT_DIR/secrets"
 ROOT_SECRET_FILE="$SECRETS_DIR/mysql_root_password"
-ASCII_ART_FILE="/res/ascii-waldjugend-art.txt"
-COMPOSE_FILE="/docker-compose.yml"
+ASCII_ART_FILE="$ROOT_DIR/res/ascii-waldjugend-art.txt"
+COMPOSE_FILE="$ROOT_DIR/docker-compose.yml"
 
 clear
 echo "Welcome to the Waldjugend Docker Setup"
