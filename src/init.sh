@@ -6,9 +6,7 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
-ENV_FILE="$ROOT_DIR/.env"
-SECRETS_DIR="$ROOT_DIR/secrets"
-ROOT_SECRET_FILE="$SECRETS_DIR/mysql_root_password"
+TMP_SECRET_DIR="$(mktemp -d)"
 ASCII_ART_FILE="$ROOT_DIR/res/ascii-waldjugend-art.txt"
 COMPOSE_FILE="$ROOT_DIR/docker-compose.yml"
 
@@ -16,53 +14,46 @@ clear
 echo "Welcome to the Waldjugend Docker Setup"
 echo
 
-if [ ! -f "$ENV_FILE" ]; then
-  echo "[+] Generating .env file..."
+# Prompt for admin username
+read -p "Enter MySQL admin username [default: admin]: " MYSQL_USER
+MYSQL_USER=${MYSQL_USER:-admin}
 
-  # Prompt for admin username
-  read -p "Enter MySQL admin username [default: admin]: " MYSQL_USER
-  MYSQL_USER=${MYSQL_USER:-admin}
+# Prompt for admin password (with confirmation)
+while true; do
+  read -s -p "Enter a secure password for MySQL admin user '$MYSQL_USER': " MYSQL_PASSWORD
+  echo
+  read -s -p "Confirm password: " MYSQL_PASSWORD_CONFIRM
+  echo
+  if [ "$MYSQL_PASSWORD" = "$MYSQL_PASSWORD_CONFIRM" ]; then
+    break
+  else
+    echo "Passwords do not match. Try again."
+  fi
+done
 
-  # Prompt for admin password (with confirmation)
-  while true; do
-    read -s -p "Enter a secure password for MySQL admin user '$MYSQL_USER': " MYSQL_PASSWORD
-    echo
-    read -s -p "Confirm password: " MYSQL_PASSWORD_CONFIRM
-    echo
-    if [ "$MYSQL_PASSWORD" = "$MYSQL_PASSWORD_CONFIRM" ]; then
-      break
-    else
-      echo "Passwords do not match. Try again."
-    fi
-  done
+# Generate root password
+echo "[+] Generating secure MySQL root password..."
+MYSQL_ROOT_PASSWORD=$(openssl rand -base64 32)
 
-  # Write .env file with comments
-  echo "[+] Writing credentials to $ENV_FILE..."
-  cat <<EOF > "$ENV_FILE"
-# -------------------------
-# DATABASE CREDENTIALS
-# -------------------------
+# Write secrets to temporary files
+echo "$MYSQL_ROOT_PASSWORD" > "$TMP_SECRET_DIR/mysql_root_password"
+echo "$MYSQL_USER" > "$TMP_SECRET_DIR/mysql_user"
+echo "$MYSQL_PASSWORD" >> "$TMP_SECRET_DIR/mysql_password"
 
-# Admin user credentials for MySQL
-MYSQL_USER=$MYSQL_USER
-MYSQL_PASSWORD=$MYSQL_PASSWORD
-EOF
+# Create Docker volume if needed
+echo "[+] Creating Docker volume 'secret_data'..."
+docker volume create secret_data > /dev/null
 
-else
-  echo "[*] .env file already exists at $ENV_FILE"
-fi
+# Copy secrets into volume
+echo "[+] Copying secrets into Docker-managed volume..."
+docker run --rm \
+  -v secret_data:/run/secrets \
+  -v "$TMP_SECRET_DIR":/tmp_secrets:ro \
+  alpine \
+  sh -c "cp /tmp_secrets/* /run/secrets/ && chmod 0444 /run/secrets/*"
 
-# Create secrets directory if missing
-mkdir -p "$SECRETS_DIR"
-
-# Generate root password if not already created
-if [ ! -f "$ROOT_SECRET_FILE" ]; then
-  echo "[+] Generating secure MySQL root password..."
-  openssl rand -base64 32 > "$ROOT_SECRET_FILE"
-  chmod 644 "$ROOT_SECRET_FILE"
-else
-  echo "[*] Root password secret already exists at $ROOT_SECRET_FILE"
-fi
+# Remove temp secrets
+rm -rf "$TMP_SECRET_DIR"
 
 # Launch docker-compose (v2 or v1)
 echo "[*] Starting Docker containers..."
