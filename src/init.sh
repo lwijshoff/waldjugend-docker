@@ -16,22 +16,41 @@ clear
 echo "Welcome to the Waldjugend Docker Setup"
 echo
 
-# Prompt for admin username
-read -p "Enter MySQL admin username [default: admin]: " MYSQL_USER
-MYSQL_USER=${MYSQL_USER:-admin}
+if [ ! -f "$ENV_FILE" ]; then
+  echo "[+] Generating .env file..."
 
-# Prompt for admin password (with confirmation)
-while true; do
-  read -s -p "Enter a secure password for MySQL admin user '$MYSQL_USER': " MYSQL_PASSWORD
-  echo
-  read -s -p "Confirm password: " MYSQL_PASSWORD_CONFIRM
-  echo
-  if [ "$MYSQL_PASSWORD" = "$MYSQL_PASSWORD_CONFIRM" ]; then
-    break
-  else
-    echo "Passwords do not match. Try again."
-  fi
-done
+  # Prompt for admin username
+  read -p "Enter MySQL admin username [default: admin]: " MYSQL_USER
+  MYSQL_USER=${MYSQL_USER:-admin}
+
+  # Prompt for admin password (with confirmation)
+  while true; do
+    read -s -p "Enter a secure password for MySQL admin user '$MYSQL_USER': " MYSQL_PASSWORD
+    echo
+    read -s -p "Confirm password: " MYSQL_PASSWORD_CONFIRM
+    echo
+    if [ "$MYSQL_PASSWORD" = "$MYSQL_PASSWORD_CONFIRM" ]; then
+      break
+    else
+      echo "Passwords do not match. Try again."
+    fi
+  done
+
+  # Write .env file with comments
+  echo "[+] Writing credentials to $ENV_FILE..."
+  cat <<EOF > "$ENV_FILE"
+# -------------------------
+# DATABASE CREDENTIALS
+# -------------------------
+
+# Admin user credentials for MySQL
+MYSQL_USER=$MYSQL_USER
+MYSQL_PASSWORD=$MYSQL_PASSWORD
+EOF
+
+else
+  echo "[*] .env file already exists at $ENV_FILE"
+fi
 
 # Create secrets directory if missing
 mkdir -p "$SECRETS_DIR"
@@ -44,19 +63,6 @@ if [ ! -f "$ROOT_SECRET_FILE" ]; then
 else
   echo "[*] Root password secret already exists at $ROOT_SECRET_FILE"
 fi
-
-# Save to .env
-# Write .env file with comments
-echo "[+] Writing credentials to $ENV_FILE..."
-cat <<EOF > "$ENV_FILE"
-# -------------------------
-# DATABASE CREDENTIALS
-# -------------------------
-
-# Admin user credentials for MySQL
-MYSQL_USER=$MYSQL_USER
-MYSQL_PASSWORD=$MYSQL_PASSWORD
-EOF
 
 # Show ASCII art
 echo
