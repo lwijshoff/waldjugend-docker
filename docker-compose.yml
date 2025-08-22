@@ -47,12 +47,6 @@ services:
       - 8080:80
     environment:
       PMA_HOST: db
-      PMA_PMADB: pma_db
-    volumes:
-      - db_data:/var/lib/mysql
-      - secret_data:/run/secrets:ro
-      - ./src/init-pma.sql:/docker-entrypoint-initdb.d/init-pma.sql:ro
-
     depends_on:
       - db
     networks:
