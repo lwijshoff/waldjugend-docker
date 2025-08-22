@@ -57,6 +57,9 @@ Before you begin, make sure you have installed:
   ```
   This will start WordPress, the database, and other required services in the background.
 
+> [!TIP]  
+> It might take some time for the database to get up and running. 
+
 ---
 
 ## Usage
@@ -67,9 +70,6 @@ Before you begin, make sure you have installed:
   http://localhost
   ```
   (or replace `localhost` with your server’s IP/hostname).
-
-  > [!TIP]  
-  > It might take some time for the database to get up and running. 
 
 - **Stop containers**:  
   ```bash
