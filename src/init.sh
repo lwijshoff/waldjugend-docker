@@ -2,11 +2,11 @@
 
 set -e
 
-ENV_FILE="../.env"
-SECRETS_DIR="../secrets"
+ENV_FILE="/.env"
+SECRETS_DIR="/secrets"
 ROOT_SECRET_FILE="$SECRETS_DIR/mysql_root_password"
-ASCII_ART_FILE="../res/ascii-waldjugend-art.txt"
-COMPOSE_FILE="../docker-compose.yml"
+ASCII_ART_FILE="/res/ascii-waldjugend-art.txt"
+COMPOSE_FILE="/docker-compose.yml"
 
 clear
 echo "Welcome to the Waldjugend Docker Setup"
@@ -63,6 +63,16 @@ else
 fi
 echo
 
-# Launch docker-compose
+# Launch docker-compose (v2 or v1)
 echo "[*] Starting Docker containers..."
-docker-compose -f ../docker-compose.yml up -d
+
+if command -v docker compose &> /dev/null; then
+  docker compose -f "$COMPOSE_FILE" up -d
+elif command -v docker-compose &> /dev/null; then
+  docker-compose -f "$COMPOSE_FILE" up -d
+else
+  echo "Neither 'docker compose' nor 'docker-compose' is available on your system."
+  echo "Please install Docker Compose to proceed:"
+  echo "https://docs.docker.com/compose/install/"
+  exit 1
+fi
