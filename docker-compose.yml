@@ -14,9 +14,8 @@ services:
       WORDPRESS_DB_PASSWORD_FILE: /run/secrets/mysql_root_password
     volumes:
       - wp_data:/var/www/html
+      - ./secrets:/run/secrets:ro
       - ./config.ini:/usr/local/etc/php/conf.d/config.ini
-    secrets:
-      - mysql_root_password
     depends_on:
       - db
     networks:
@@ -35,8 +34,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
-    secrets:
-      - mysql_root_password
+      - ./secrets:/run/secrets:ro
     networks:
       - backend
 
@@ -63,10 +61,6 @@ volumes:
     name: wp_data
   db_data:
     name: db_data
-
-secrets:
-  mysql_root_password:
-    file: ./secrets/mysql_root_password
 
 networks:
   backend:
