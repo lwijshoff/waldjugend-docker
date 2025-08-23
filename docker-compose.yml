@@ -11,9 +11,10 @@ services:
       WORDPRESS_DB_NAME: wp_db
       WORDPRESS_DB_PREFIX: wp_
       WORDPRESS_DB_USER: root
-      WORDPRESS_DB_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/mysql_root_password
     volumes:
       - wp_data:/var/www/html
+      - secret_data:/run/secrets:ro
       - ./config.ini:/usr/local/etc/php/conf.d/config.ini
     depends_on:
       - db
@@ -28,11 +29,12 @@ services:
     environment:
       MYSQL_DATABASE: wp_db
       MYSQL_ROOT_HOST: '%' # Allow root access within the Docker network (safe if DB port isn't exposed)
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_USER_FILE: /run/secrets/mysql_user
+      MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
     volumes:
       - db_data:/var/lib/mysql
+      - secret_data:/run/secrets:ro
     networks:
       - backend
 
@@ -45,10 +47,6 @@ services:
       - 8080:80
     environment:
       PMA_HOST: db
-      PMA_PMADB: pma_db
-      # Unset below if you want Config authentication mode instead of cookie authentication
-      # PMA_USER: ${MYSQL_USER}
-      # PMA_PASSWORD: ${MYSQL_PASSWORD}
     depends_on:
       - db
     networks:
@@ -56,11 +54,14 @@ services:
 
 volumes:
   wp_data:
-    name: wp_data
+    name: wj_wp_data
   db_data:
-    name: db_data
+    name: wj_db_data
+  secret_data:
+    name: wj_secret_data
+    external: true
 
 networks:
   backend:
-    name: waldjugend_backend
+    name: wj_backend
     driver: bridge
