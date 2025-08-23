@@ -4,7 +4,7 @@
 
 This repository contains everything you need to set up a **WordPress** environment on your host.
 It uses Docker and Docker Compose for an easy and reproducible setup.
-Please note it was modified to fit the use case of the Deutsche Waldjugend.
+Please note it was modified to fit the use case of the [Deutsche Waldjugend](https://waldjugend.de/).
 
 If you are just looking to install the theme or the plugin without Docker, check out my other repositories:  
 - [waldjugend-theme](https://github.com/lwijshoff/waldjugend-theme)  
