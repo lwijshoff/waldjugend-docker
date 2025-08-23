@@ -38,56 +38,76 @@ Before you begin, make sure you have installed:
   cd waldjugend-docker
   ```
 
-2. **Configure environment variables**  
-  Rename the example `.env` file and adjust it to your needs:
+2. **Configure WordPress settings**  
+  There is a `config.ini` file in the `/rsc` directory. Adjust it as needed for your environment. \
+  This file is mounted into the container as PHP configuration (`php.ini` directives, see [php documentation](https://www.php.net/manual/en/ini.list.php))
+
+3. **Run the initialization script**  
+  Make the script executable (first time only), then run it:
   ```bash
-  mv .env.example .env
+  chmod +x ./src/init.sh
+  ./src/ínit.sh
   ```
-  Edit `.env` with your preferred editor (database name, user, password, ports, etc.).
+  This will:
+  - Ask you to set an MySQL admin username and password.
+  - Generate a random root password for backend access.
+  - Create the required Docker volume `wj_secret_data` and inject the credentials.
+  - Run the `docker compose up -d` command.
 
   > [!CAUTION]  
-  > Pick strong, long and random passwords, as they may otherwise grant unauthorized people access to your database. 
-
-3. **Configure WordPress settings**  
-  There is a `config.ini` file in the `/rsc` directory. Adjust it as needed for your environment.
-
-4. **Start the containers**  
-  ```bash
-  docker compose up -d
-  ```
-  This will start WordPress, the database, and other required services in the background.
+  > Pick strong, long and random passwords. Weak passwords may allow unauthorized access.
 
 ---
 
 ## Usage
 
-- **Access WordPress**:  
-  Once everything is running, open your browser and go to:  
+- ### Access WordPress:  
+  Once everything is up and running, wordpress will be available on port `80` (standard http port):  
   ```
   http://localhost
   ```
-  (or replace `localhost` with your server’s IP/hostname).
+  Here you can begin with setting up WordPress.
+
+- ### Access phpMyAdmin:
+  PhpMyAdmin will be available on port `8080`:  
+  ```
+  http://localhost:8080
+  ```
+  Here you can access phpMyAdmin with the credentials you entered before.
+
+  (Or alternatively replace `localhost` with your server’s IP/hostname).
 
   > [!TIP]  
-  > It might take some time for the database to get up and running. 
+  > WorPress and phpMyAdmin may not be immediately available while the database is initializing. \
+  > You can check the logs with:
+  > ```bash
+  > docker compose logs -f
+  > ```
 
-- **Stop containers**:  
+- ### Stopping containers:
   ```bash
   docker compose down
   ```
-  These volumes are persistent, so your data is retained. Unless you delete the `wordpress_data` and `db_data` volumes.
-
-- **View logs**:  
+  These volumes `wj_wp_data`, `wj_db_data` are persistent, so your data is retained.
+  
+  If you want to delete these volumes consider running:
   ```bash
-  docker compose logs -f
+  docker compose down -v
   ```
+  Running this command will remove the `wj_wp_data` and `wj_db_data` volumes. \
+  The `wj_secret_data` volume is not removed, as it contains sensitive credentials such as:
+
+  - `mysql_root_password` - Randomly generated root password used internally by WordPress to connect to MariaDB.
+  - `mysql_user` - Admin username for accessing MariaDB through phpMyAdmin.
+  - `mysql_password` - Corresponding admin password for phpMyAdmin/MariaDB access.
 
 ---
 
 ## Notes
 
-- Use `.env` to customize **database credentials**.  
-- `config.ini` in `/rsc` [contains php.ini directives](https://www.php.net/manual/en/ini.list.php).  
+- The `wj_secret_data` volume is not removed when running `docker compose down -v`. 
+  - This lets you reset containers but keep credentials, so you can restart with `docker compose up -d` without rerunning `./src/init.sh`.
+- `config.ini` in `/rsc` is customizable and supports all [php.ini directives](https://www.php.net/manual/en/ini.list.php).  
 - This setup is mainly intended for **local development** and **testing**.  
   For production use, consider adding HTTPS, backups, and security hardening.
 
