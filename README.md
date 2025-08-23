@@ -77,12 +77,12 @@ Before you begin, make sure you have installed:
 
   (Or alternatively replace `localhost` with your server’s IP/hostname).
 
-  > [!TIP]  
-  > WorPress and phpMyAdmin may not be immediately available while the database is initializing. \
-  > You can check the logs with:
-  > ```bash
-  > docker compose logs -f
-  > ```
+> [!TIP]  
+> WorPress and phpMyAdmin may not be immediately available while the database is initializing. \
+> You can check the logs with:
+> ```bash
+> docker compose logs -f
+> ```
 
 - ### Stopping containers:
   ```bash
