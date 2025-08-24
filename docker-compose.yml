@@ -15,7 +15,7 @@ services:
     volumes:
       - wp_data:/var/www/html
       - secret_data:/run/secrets:ro
-      - ./config.ini:/usr/local/etc/php/conf.d/config.ini
+      - ./rsc/config.ini:/usr/local/etc/php/conf.d/config.ini
     depends_on:
       - db
     networks:
