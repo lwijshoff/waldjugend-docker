@@ -46,7 +46,7 @@ Before you begin, make sure you have installed:
   Make the script executable (first time only), then run it:
   ```bash
   chmod +x ./src/init.sh
-  ./src/ínit.sh
+  ./src/init.sh
   ```
   This will:
   - Ask you to set an MySQL admin username and password.
